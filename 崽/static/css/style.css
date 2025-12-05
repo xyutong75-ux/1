@@ -1,0 +1,164 @@
+/* static/css/style.css */
+
+/* ===============================
+   全站通用
+   =============================== */
+
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+
+    /* ✅ 全站底色：淡黄色（这一行你自己以后改颜色即可） */
+    background: #c1b18c;  /* <<< 这里是淡黄色底色，你自己改 */
+}
+
+a { color: #3b6ef5; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.app-shell {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 14px;
+}
+
+/* ===============================
+   导航栏
+   =============================== */
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.06);
+    margin-bottom: 12px;
+}
+
+.nav-left { display: flex; align-items: center; gap: 8px; }
+.nav-logo {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: #111;
+}
+.nav-title {
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.nav-tabs { display: flex; gap: 6px; }
+.nav-tab {
+    border: none;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #f5f6fb;
+    cursor: pointer;
+    font-size: 14px;
+}
+.nav-tab.active {
+    background: #111;
+    color: #fff;
+}
+
+/* ===============================
+   卡片 / 表单 / 按钮
+   =============================== */
+
+.card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 14px;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.06);
+    margin-bottom: 12px;
+}
+
+.card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 700;
+}
+.card-subtitle {
+    font-size: 13px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.form-group { margin-bottom: 10px; }
+.form-label {
+    display: block;
+    font-size: 13px;
+    color: #333;
+    margin-bottom: 4px;
+}
+.form-control {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    outline: none;
+    font-size: 14px;
+    background: #fff;
+}
+.form-control:focus {
+    border-color: #3b6ef5;
+}
+
+.btn {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-align: center;
+}
+.btn-primary {
+    background: #111;
+    color: white;
+}
+.btn-outline {
+    background: transparent;
+    border-color: #ddd;
+    color: #333;
+}
+
+.flex { display: flex; align-items: center; }
+.flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.meta-text {
+    font-size: 12px;
+    color: #777;
+}
+
+.chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    background: #f2f2f7;
+    color: #333;
+}
+
+.alert {
+    padding: 8px 10px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+.alert-success { background: #e9f7ef; color: #1d6b3a; }
+.alert-info { background: #e8f1ff; color: #2059c8; }
+.alert-warning { background: #fff5db; color: #7a5a00; }
+.alert-danger { background: #ffe9e9; color: #9f1c1c; }

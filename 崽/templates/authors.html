@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}作者 - 。{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div>
+            <div class="card-title">作者一览</div>
+            <div class="card-subtitle">点击查看该作者名下的书与专辑</div>
+        </div>
+    </div>
+
+    <ul style="list-style:none; padding-left:0; margin:0;">
+        {% for author in authors %}
+        <li style="padding:8px 4px; border-bottom:1px solid #f0f0f5;">
+            <a href="{{ url_for('author_detail', author_id=author.id) }}">
+                {{ author.pen_name }}
+            </a>
+            {% if author.user %}
+            <span class="meta-text">（站内用户：{{ author.user.username }}）</span>
+            {% endif %}
+        </li>
+        {% else %}
+        <li class="meta-text">目前还没有作者。</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

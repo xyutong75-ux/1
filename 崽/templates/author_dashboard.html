@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}作者后台 - 夜读小说{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div>
+            <div class="card-title">作者后台</div>
+            <div class="card-subtitle">管理你的书籍、专辑和笔记</div>
+        </div>
+    </div>
+
+    <h4 style="font-size:15px;">新建书籍</h4>
+    <form method="post" action="{{ url_for('create_book') }}">
+        <div class="form-group">
+            <label class="form-label">书名</label>
+            <input class="form-control" type="text" name="title" placeholder="输入书名">
+        </div>
+        <div class="form-group">
+            <label class="form-label">简介（可选）</label>
+            <textarea class="form-control" name="description" rows="2"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">创建书籍</button>
+    </form>
+
+    <hr style="margin:18px 0; border:none; border-top:1px solid #eee;">
+
+    <h4 style="font-size:15px;">新建专辑</h4>
+    <form method="post" action="{{ url_for('create_album') }}">
+        <div class="form-group">
+            <label class="form-label">专辑名称</label>
+            <input class="form-control" type="text" name="title" placeholder="输入专辑名">
+        </div>
+        <div class="form-group">
+            <label class="form-label">说明（可选）</label>
+            <textarea class="form-control" name="description" rows="2"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">创建专辑</button>
+    </form>
+
+    <hr style="margin:18px 0; border:none; border-top:1px solid #eee;">
+
+    <h4 style="font-size:15px;">写笔记</h4>
+    <form method="post" action="{{ url_for('create_note') }}">
+        <div class="form-group">
+            <label class="form-label">笔记内容</label>
+            <textarea class="form-control" name="content" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-label">关联书籍（可选，填书的 ID）</label>
+            <input class="form-control" type="number" name="book_id" placeholder="如：1">
+        </div>
+        <div class="form-group">
+            <label class="form-label">关联专辑（可选，填专辑 ID）</label>
+            <input class="form-control" type="number" name="album_id" placeholder="如：1">
+        </div>
+        <button type="submit" class="btn btn-primary">保存笔记</button>
+    </form>
+
+    <hr style="margin:18px 0; border:none; border-top:1px solid #eee;">
+
+    <h4 style="font-size:15px;">当前书籍</h4>
+    <ul style="list-style:none; padding-left:0;">
+        {% for book in author.books %}
+        <li style="margin-bottom:4px;">
+            [ID {{ book.id }}] <a href="{{ url_for('book_detail', book_id=book.id) }}">{{ book.title }}</a>
+        </li>
+        {% else %}
+        <li class="meta-text">暂无书籍。</li>
+        {% endfor %}
+    </ul>
+
+    <h4 style="font-size:15px; margin-top:12px;">当前专辑</h4>
+    <ul style="list-style:none; padding-left:0;">
+        {% for album in author.albums %}
+        <li style="margin-bottom:4px;">
+            [ID {{ album.id }}] <a href="{{ url_for('album_view', album_id=album.id) }}">{{ album.title }}</a>
+        </li>
+        {% else %}
+        <li class="meta-text">暂无专辑。</li>
+        {% endfor %}
+    </ul>
+
+    <h4 style="font-size:15px; margin-top:12px;">最近笔记</h4>
+    <ul style="list-style:none; padding-left:0;">
+        {% for note in (author.books|map(attribute='notes')|list + author.albums|map(attribute='notes')|list)|first|default([]) %}
+        {% endfor %}
+        <li class="meta-text">（笔记列表可以根据需要再细化，这里先留空 UI。）</li>
+    </ul>
+</div>
+{% endblock %}

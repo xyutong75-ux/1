@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}导出访问数据 - 。{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div>
+            <div class="card-title">导出访问数据</div>
+            <div class="card-subtitle">按专辑 + 时间段统计访问情况</div>
+        </div>
+    </div>
+
+    <form method="post">
+        <div class="form-group">
+            <label class="form-label">选择专辑</label>
+            <select class="form-control" name="album_id">
+                {% for album in albums %}
+                <option value="{{ album.id }}">{{ album.title }}（作者：{{ album.author.pen_name }}）</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">起始日期（可空）</label>
+            <input class="form-control" type="date" name="start_date">
+        </div>
+        <div class="form-group">
+            <label class="form-label">结束日期（可空）</label>
+            <input class="form-control" type="date" name="end_date">
+        </div>
+
+        <button type="submit" class="btn btn-primary">生成数据</button>
+    </form>
+
+    {% if data_preview %}
+    <hr style="margin:18px 0; border:none; border-top:1px solid #eee;">
+    <div class="card-subtitle" style="margin-bottom:6px;">CSV 预览：</div>
+    <pre style="background:#f5f5fa; padding:10px; border-radius:12px; font-size:12px; overflow:auto;">
+{{ data_preview }}
+    </pre>
+    <div class="meta-text">
+        你可以复制这段文本，粘贴到 Excel / CSV 文件中保存。
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

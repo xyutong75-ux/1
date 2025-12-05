@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}搜索 - 夜读小说{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div>
+            <div class="card-title">搜索</div>
+            <div class="card-subtitle">按书名或作者名在站内查找</div>
+        </div>
+    </div>
+
+    <form method="post">
+        <div class="form-group">
+            <label class="form-label">关键词</label>
+            <input class="form-control" type="text" name="q" placeholder="输入书名或作者"
+                   value="{{ query or '' }}">
+        </div>
+        <button type="submit" class="btn btn-primary">搜索</button>
+    </form>
+
+    {% if results is not none %}
+    <hr style="margin:16px 0; border:none; border-top:1px solid #eee;">
+    <div class="card-subtitle">搜索结果：</div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>书名</th>
+            <th>作者</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for book in results %}
+        <tr>
+            <td><a href="{{ url_for('book_detail', book_id=book.id) }}">{{ book.title }}</a></td>
+            <td>
+                <a href="{{ url_for('author_detail', author_id=book.author.id) }}">
+                    {{ book.author.pen_name }}
+                </a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="2" class="meta-text">没有找到匹配的书。</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+{% endblock %}

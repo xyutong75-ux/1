@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}{{ book.title }} - 夜读小说{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div>
+            <div class="card-title">{{ book.title }}</div>
+            <div class="card-subtitle">
+                作者：
+                {% if book.author %}
+                <a href="{{ url_for('author_detail', author_id=book.author.id) }}">
+                    {{ book.author.pen_name }}
+                </a>
+                {% else %}
+                未知
+                {% endif %}
+            </div>
+        </div>
+        <div>
+            {% if user %}
+            <form method="post" action="{{ url_for('toggle_favorite', book_id=book.id) }}">
+                <button type="submit" class="btn {{ 'btn-outline' if is_favorite else 'btn-primary' }}">
+                    {{ '取消收藏' if is_favorite else '收藏本书' }}
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if book.description %}
+    <p class="meta-text">{{ book.description }}</p>
+    {% endif %}
+
+    <h4 style="font-size:15px; margin-top:14px;">章节目录</h4>
+    <ul style="list-style:none; padding-left:0; margin-top:8px;">
+        {% for chapter in book.chapters %}
+        <li style="margin-bottom:6px;">
+            <a href="{{ url_for('chapter_detail', chapter_id=chapter.id) }}">
+                第 {{ chapter.order_index }} 章 · {{ chapter.title }}
+            </a>
+        </li>
+        {% else %}
+        <li class="meta-text">还没有章节，作者可以在作者后台添加。</li>
+        {% endfor %}
+    </ul>
+
+    {% if user and user.is_author() and book.author and book.author.user_id == user.id %}
+    <hr style="margin:16px 0; border:none; border-top:1px solid #eee;">
+    <h4 style="font-size:15px; margin-top:4px;">作者快速新增章节</h4>
+    <form method="post" action="{{ url_for('create_chapter', book_id=book.id) }}">
+        <div class="form-group">
+            <label class="form-label">章节标题</label>
+            <input class="form-control" type="text" name="title" placeholder="例如：第一章 初见">
+        </div>
+        <div class="form-group">
+            <label class="form-label">章节内容</label>
+            <textarea class="form-control" name="content" rows="6" placeholder="在这里写入章节内容..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">添加章节</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
+

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}管理员后台 - 。{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div>
+            <div class="card-title">管理员后台</div>
+            <div class="card-subtitle">站点概览</div>
+        </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px;">
+        <div class="card" style="padding:12px 10px; box-shadow:none; border-radius:16px;">
+            <div class="meta-text">用户总数</div>
+            <div style="font-size:22px; font-weight:600; margin-top:4px;">{{ total_users }}</div>
+        </div>
+        <div class="card" style="padding:12px 10px; box-shadow:none; border-radius:16px;">
+            <div class="meta-text">书籍总数</div>
+            <div style="font-size:22px; font-weight:600; margin-top:4px;">{{ total_books }}</div>
+        </div>
+        <div class="card" style="padding:12px 10px; box-shadow:none; border-radius:16px;">
+            <div class="meta-text">专辑总数</div>
+            <div style="font-size:22px; font-weight:600; margin-top:4px;">{{ total_albums }}</div>
+        </div>
+        <div class="card" style="padding:12px 10px; box-shadow:none; border-radius:16px;">
+            <div class="meta-text">总访问记录</div>
+            <div style="font-size:22px; font-weight:600; margin-top:4px;">{{ total_visits }}</div>
+        </div>
+    </div>
+
+    <hr style="margin:18px 0; border:none; border-top:1px solid #eee;">
+
+    <div class="flex" style="gap:8px; flex-wrap:wrap;">
+        <a class="btn btn-primary" href="{{ url_for('admin_export') }}">导出访问数据</a>
+        <!-- 后面如果你增加更多管理页面，可以在这里继续加按钮 -->
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}。{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+
+    <!-- 顶部导航栏 -->
+    <div class="navbar">
+        <div class="nav-left">
+            <!-- 左侧小 Logo（文字已清空） -->
+            <div class="nav-logo"></div>
+
+            <!-- 网站主标题（已经清空） -->
+            <div class="nav-title"></div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab {% if request.endpoint == 'authors' %}active{% endif %}"
+                    onclick="location.href='{{ url_for('authors') }}'">
+                作者
+            </button>
+
+            <button class="nav-tab {% if request.endpoint in ['favorites', 'book_detail', 'chapter_detail'] %}active{% endif %}"
+                    onclick="location.href='{{ url_for('favorites') if user else url_for('login') }}'">
+                读书
+            </button>
+
+            <button class="nav-tab {% if request.endpoint in ['author_detail', 'album_view'] %}active{% endif %}"
+                    onclick="location.href='{{ url_for('index') }}'">
+                专辑
+            </button>
+
+            <button class="nav-tab {% if request.endpoint == 'search' %}active{% endif %}"
+                    onclick="location.href='{{ url_for('search') }}'">
+                搜索
+            </button>
+        </div>
+    </div>
+
+    <!-- 登录状态栏 -->
+    {% if user %}
+    <div class="flex-between" style="margin-bottom:12px;">
+        <div class="meta-text">
+            当前用户：{{ user.username }}
+            {% if user.is_admin() %}<span class="chip">管理员</span>
+            {% elif user.is_author() %}<span class="chip">作者</span>
+            {% else %}<span class="chip">读者</span>
+            {% endif %}
+        </div>
+
+        <div class="flex" style="gap:6px;">
+            <a class="btn btn-outline" href="{{ url_for('settings') }}">设置</a>
+
+            {% if user.is_admin() %}
+            <a class="btn btn-outline" href="{{ url_for('admin_dashboard') }}">管理</a>
+            {% endif %}
+
+            {% if user.is_author() and user.display_author_ui %}
+            <a class="btn btn-primary" href="{{ url_for('author_dashboard') }}">作者后台</a>
+            {% endif %}
+
+            <a class="btn btn-outline" href="{{ url_for('logout') }}">退出</a>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="flex-between" style="margin-bottom:12px;">
+        <div class="meta-text">未登录访客</div>
+        <div class="flex" style="gap:6px;">
+            <a class="btn btn-outline" href="{{ url_for('login') }}">登录</a>
+            <a class="btn btn-primary" href="{{ url_for('register') }}">注册</a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- 全局提示 -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="alert alert-{{ category }}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- 页面主体内容 -->
+    {% block content %}{% endblock %}
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

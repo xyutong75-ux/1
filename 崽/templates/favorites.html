@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}我的收藏 - 。{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div>
+            <div class="card-title">我的收藏</div>
+            <div class="card-subtitle">你收藏的书都在这里</div>
+        </div>
+    </div>
+
+    <ul style="list-style:none; padding-left:0; margin:0;">
+        {% for fav in favorites %}
+        <li style="padding:8px 4px; border-bottom:1px solid #f0f0f5;">
+            <a href="{{ url_for('book_detail', book_id=fav.book.id) }}">
+                {{ fav.book.title }}
+            </a>
+            {% if fav.book.author %}
+            <span class="meta-text"> - {{ fav.book.author.pen_name }}</span>
+            {% endif %}
+        </li>
+        {% else %}
+        <li class="meta-text" style="padding:8px 4px;">
+            你还没有收藏任何书。
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

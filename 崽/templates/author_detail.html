@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}{{ author.pen_name }} - 作者{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div>
+            <div class="card-title">{{ author.pen_name }}</div>
+            <div class="card-subtitle">名下作品与专辑</div>
+        </div>
+        <div>
+            <span class="chip">作者 ID：{{ author.id }}</span>
+        </div>
+    </div>
+
+    {# 只有当前登录用户就是这个作者本人，才显示创建表单 #}
+    {% if user and user.is_author() and author.user_id == user.id %}
+    <div style="margin-bottom:16px;">
+        <h4 style="font-size:15px; margin-bottom:6px;">在此作者页快速创建作品</h4>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px;">
+
+            <!-- 新建书籍 -->
+            <div class="card" style="padding:12px 10px; box-shadow:none; border-radius:16px;">
+                <div class="card-subtitle" style="margin-bottom:6px;">新建小说</div>
+                <form method="post" action="{{ url_for('create_book') }}">
+                    <div class="form-group">
+                        <label class="form-label">书名</label>
+                        <input class="form-control" type="text" name="title" placeholder="输入小说名字">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">简介（可选）</label>
+                        <textarea class="form-control" name="description" rows="2"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">创建小说</button>
+                </form>
+            </div>
+
+            <!-- 新建专辑 -->
+            <div class="card" style="padding:12px 10px; box-shadow:none; border-radius:16px;">
+                <div class="card-subtitle" style="margin-bottom:6px;">新建专辑</div>
+                <form method="post" action="{{ url_for('create_album') }}">
+                    <div class="form-group">
+                        <label class="form-label">专辑名称</label>
+                        <input class="form-control" type="text" name="title" placeholder="输入专辑名">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">说明（可选）</label>
+                        <textarea class="form-control" name="description" rows="2"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">创建专辑</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <hr style="margin:10px 0 18px; border:none; border-top:1px solid #eee;">
+    {% endif %}
+
+    <h4 style="font-size:15px;">书籍</h4>
+    <ul style="list-style:none; padding-left:0; margin-top:6px;">
+        {% for book in author.books %}
+        <li style="margin-bottom:6px;">
+            <a href="{{ url_for('book_detail', book_id=book.id) }}">{{ book.title }}</a>
+        </li>
+        {% else %}
+        <li class="meta-text">暂无书籍。</li>
+        {% endfor %}
+    </ul>
+
+    <hr style="margin:16px 0; border:none; border-top:1px solid #eee;">
+
+    <h4 style="font-size:15px;">专辑</h4>
+    <ul style="list-style:none; padding-left:0; margin-top:6px;">
+        {% for album, count in album_stats %}
+        <li style="margin-bottom:8px;">
+            <a href="{{ url_for('album_view', album_id=album.id) }}">{{ album.title }}</a>
+            <span class="meta-text">（访问次数：{{ count }}）</span>
+        </li>
+        {% else %}
+        <li class="meta-text">暂无专辑。</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}注册 - 。{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div>
+            <div class="card-title">注册</div>
+            <div class="card-subtitle">创建一个新账号</div>
+        </div>
+    </div>
+
+    <form method="post">
+        <div class="form-group">
+            <label class="form-label">用户名</label>
+            <input class="form-control" type="text" name="username" placeholder="字母或数字">
+        </div>
+        <div class="form-group">
+            <label class="form-label">密码</label>
+            <input class="form-control" type="password" name="password" placeholder="建议 6 位以上">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">角色</label>
+            <div style="display:flex; gap:10px; margin-top:4px;">
+                <label class="chip">
+                    <input type="radio" name="role" value="reader" checked style="margin-right:4px;">
+                    读者
+                </label>
+                <label class="chip">
+                    <input type="radio" name="role" value="author" style="margin-right:4px;">
+                    作者（同时也是读者）
+                </label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:8px;">注册</button>
+    </form>
+
+    <div class="meta-text" style="margin-top:10px; text-align:center;">
+        已有账号？
+        <a href="{{ url_for('login') }}">去登录</a>
+    </div>
+</div>
+{% endblock %}

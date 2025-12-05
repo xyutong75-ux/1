@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ chapter.title }} - {{ chapter.book.title }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div>
+            <div class="card-title">{{ chapter.book.title }}</div>
+            <div class="card-subtitle">
+                第 {{ chapter.order_index }} 章 · {{ chapter.title }}
+            </div>
+        </div>
+        <div>
+            <a class="btn btn-outline" href="{{ url_for('book_detail', book_id=chapter.book.id) }}">返回目录</a>
+        </div>
+    </div>
+
+    <div style="white-space:pre-wrap; line-height:1.6; font-size:15px;">
+        {{ chapter.content or '（暂无内容）' }}
+    </div>
+
+    <div class="chapter-nav">
+        <div>
+            {% if prev_chapter %}
+            <a class="btn btn-outline" href="{{ url_for('chapter_detail', chapter_id=prev_chapter.id) }}">
+                上一章：{{ prev_chapter.title }}
+            </a>
+            {% endif %}
+        </div>
+        <div>
+            {% if next_chapter %}
+            <a class="btn btn-primary" href="{{ url_for('chapter_detail', chapter_id=next_chapter.id) }}">
+                下一章：{{ next_chapter.title }}
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if user and user.is_author() and chapter.book.author and chapter.book.author.user_id == user.id %}
+    <hr style="margin-top:18px; border:none; border-top:1px solid #eee;">
+    <form method="post" action="{{ url_for('delete_chapter', chapter_id=chapter.id) }}">
+        <button type="submit" class="btn btn-danger">删除本章节</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

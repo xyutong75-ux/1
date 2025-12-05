@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}首页 - 。{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div>
+            <div class="card-title">全部书籍</div>
+            <div class="card-subtitle">点击书名开始阅读</div>
+        </div>
+        <div>
+            {% if user and user.is_author() and user.display_author_ui %}
+            <span class="chip">作者模式已开启</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>书名</th>
+            <th>作者</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for book in books %}
+        <tr>
+            <td>
+                <a href="{{ url_for('book_detail', book_id=book.id) }}">{{ book.title }}</a>
+            </td>
+            <td>
+                {% if book.author %}
+                <a href="{{ url_for('author_detail', author_id=book.author.id) }}">
+                    {{ book.author.pen_name }}
+                </a>
+                {% else %}
+                未知
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="2" class="meta-text">当前还没有书籍，请使用作者后台添加。</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
